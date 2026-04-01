@@ -138,15 +138,6 @@ WebProject/
 └── appsettings.json   # Configuration
 ```
 
-## Screenshots
-
-Add screenshots here showing:
-- Swagger UI with API endpoints
-- JWT authentication in action
-- Successful API responses
-- Hangfire Dashboard
-- Database tables in SSMS
-
 ## Configuration
 
 Update `appsettings.json`:

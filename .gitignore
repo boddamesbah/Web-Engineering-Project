@@ -1,0 +1,47 @@
+# Build results
+bin/
+obj/
+*.exe
+*.dll
+*.pdb
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+
+# Rider
+.idea/
+*.sln.iml
+
+# VS Code
+.vscode/
+
+# NuGet
+*.nupkg
+packages/
+
+# Logs
+*.log
+
+# Environment files
+.env
+.env.local
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Test results
+TestResults/
+
+# Publish outputs
+publish/
+wwwroot/
+
+# Docker
+.dockerignore
+
+# SQL Server files
+*.mdf
+*.ldf

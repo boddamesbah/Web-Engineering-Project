@@ -50,107 +50,141 @@ ASP.NET Core Web API with JWT authentication, role-based authorization, entity r
 - `PUT /api/instructors/{id}` - Update instructor (Admin/Instructor)
 - `DELETE /api/instructors/{id}` - Delete instructor (Admin only)
 
-### Students
-- `GET /api/students` - List all students
-- `GET /api/students/{id}` - Get student by ID
-- `POST /api/students` - Create student (Admin only)
-- `PUT /api/students/{id}` - Update student (Admin/Student)
-- `DELETE /api/students/{id}` - Delete student (Admin only)
+A full-stack course management application with a React frontend and an ASP.NET Core Web API backend. The app supports browsing and managing courses, students, instructors, and enrollments with JWT authentication and role-based access control.
 
-### Courses
-- `GET /api/courses` - List all courses
-- `GET /api/courses/{id}` - Get course by ID
-- `POST /api/courses` - Create course (Admin/Instructor)
-- `PUT /api/courses/{id}` - Update course (Admin/Instructor)
-- `DELETE /api/courses/{id}` - Delete course (Admin only)
+## Application Overview
 
-### Enrollments
-- `GET /api/enrollments` - List all enrollments (Admin only)
-- `POST /api/enrollments` - Create enrollment
-- `PUT /api/enrollments/{id}` - Update enrollment
-- `DELETE /api/enrollments/{id}` - Delete enrollment
+Features:
+- Role-based authentication (Admin, Instructor, Student)
+- Course CRUD and instructor assignment
+- Student management and enrollments (create/view/update/delete)
+- Responsive React UI built with Vite
 
-## Authentication
+## Setup (Frontend & Backend)
 
-The API uses JWT Bearer authentication. To access protected endpoints:
+Prerequisites:
+- Node.js v16+
+- .NET 10 SDK
+- SQL Server Express / LocalDB
 
-1. Register a user with role (Admin, Instructor, or Student)
-2. Login to receive a JWT token
-3. Add token to Authorization header: `Bearer {token}`
-
-### Example Login
-```json
-POST /api/auth/login
-{
-  "email": "admin@example.com",
-  "password": "password123"
-}
+Backend (run from `WebProject`):
+```powershell
+cd WebProject
+dotnet restore
+dotnet ef database update
+dotnet run
 ```
 
-### Example Response
-```json
-{
-  "token": "eyJhbGciOiJIUzI1NiIs...",
-  "email": "admin@example.com",
-  "role": "Admin",
-  "expiresAt": "2025-04-02T15:30:00Z"
-}
+Backend dev URLs (from `launchSettings.json`): `http://localhost:5265` and `https://localhost:7029`.
+
+Frontend (run from `CourseManagementUI`):
+```bash
+cd CourseManagementUI
+npm install
+npm run dev
 ```
 
-## Role-Based Authorization
-
-- **Admin**: Full access to all endpoints
-- **Instructor**: Can manage their courses and view enrollments
-- **Student**: Can view courses and manage their enrollments
-
-## Background Job (Hangfire)
-
-A recurring job runs daily at midnight to clean up pending enrollments older than 7 days.
-
-- **Job**: `cleanup-enrollments`
-- **Schedule**: Daily (Cron: `0 0 * * *`)
-- **Dashboard**: `/hangfire`
-
-## HTTP-Only Cookies
-
-HTTP-only cookies are the industry standard for secure authentication because:
-
-1. **XSS Protection**: Cookies marked as HttpOnly cannot be accessed by JavaScript, preventing XSS attacks from stealing session tokens.
-
-2. **Automatic Inclusion**: The browser automatically sends cookies with every request to the domain, simplifying authentication.
-
-3. **Security Best Practice**: Modern web security standards recommend storing authentication tokens in HttpOnly cookies rather than localStorage or sessionStorage.
-
-4. **CSRF Protection**: When combined with SameSite cookie attributes, HttpOnly cookies provide protection against both XSS and CSRF attacks.
+Frontend dev URL: `http://localhost:5173` (Vite server). The frontend proxies `/api` to `http://localhost:5265` during development.
 
 ## Project Structure
 
 ```
-WebProject/
-├── Controllers/        # API controllers
-├── Database/           # DbContext
-├── DTOs/              # Data Transfer Objects
-├── Interfaces/        # Service interfaces
-├── Models/            # Entity models
-├── Services/          # Business logic
-├── Migrations/        # EF Core migrations
-├── Program.cs         # App startup
-└── appsettings.json   # Configuration
+Web Project/
+├── CourseManagementUI/   # React frontend (Vite)
+├── WebProject/           # ASP.NET Core backend (API)
+└── README.md             # This consolidated project README
 ```
 
-## Configuration
+## API Routes (used by the frontend)
 
-Update `appsettings.json`:
+Authentication
+- POST /api/auth/register
+- POST /api/auth/login
+- GET  /api/auth/me
 
-```json
-{
-  "ConnectionStrings": {
-    "DefaultConnection": "Server=(localdb)\\mssqllocaldb;Database=CourseManagementDB;Trusted_Connection=True"
-  },
-  "Jwt": {
-    "Key": "YourSuperSecretKeyThatIsAtLeast32Characters!",
-    "Issuer": "CourseManagementAPI",
-    "Audience": "CourseManagementClient"
-  }
-}
+Courses
+- GET    /api/courses
+- GET    /api/courses/{id}
+- GET    /api/courses/{id}/enrollments
+- GET    /api/courses/instructor/{instructorId}
+- POST   /api/courses
+- PUT    /api/courses/{id}
+- DELETE /api/courses/{id}
+
+Students
+- GET    /api/students
+- GET    /api/students/{id}
+- GET    /api/students/{id}/enrollments
+- POST   /api/students
+- PUT    /api/students/{id}
+- DELETE /api/students/{id}
+
+Instructors
+- GET    /api/instructors
+- GET    /api/instructors/{id}
+- POST   /api/instructors
+- PUT    /api/instructors/{id}
+- DELETE /api/instructors/{id}
+
+Enrollments
+- GET    /api/enrollments
+- GET    /api/enrollments/{id}
+- GET    /api/enrollments/student/{studentId}
+- GET    /api/enrollments/course/{courseId}
+- POST   /api/enrollments
+- PUT    /api/enrollments/{id}
+- DELETE /api/enrollments/{id}
+
+## Frontend Routes
+
 ```
+/                     Home
+/login                Login
+/register             Register
+/courses              Courses list
+/courses/new          Create course
+/courses/:id          Course details
+/courses/:id/edit     Edit course
+/students             Students list
+/students/new         Create student
+/students/:id         Student details
+/students/:id/edit    Edit student
+/instructors          Instructors list
+/instructors/new      Create instructor
+/instructors/:id      Instructor details
+/instructors/:id/edit Edit instructor
+/enrollments          Enrollments list
+/enrollments/new      Create enrollment
+/enrollments/:id      Enrollment details
+/enrollments/:id/edit Edit enrollment
+```
+
+## Screenshots
+
+- Home page
+![Home page](Screenshot%202026-05-06%20115534.png)
+
+- Courses page
+![Courses page](Screenshot%202026-05-06%20115551.png)
+
+- Students page
+![Students page](Screenshot%202026-05-06%20115600.png)
+
+- Instructors page
+![Instructors page](Screenshot%202026-05-06%20115607.png)
+
+- Enrollments page
+![Enrollments page](Screenshot%202026-05-06%20115615.png)
+
+- Login page
+![Login page](Screenshot%202026-05-06%20115628.png)
+
+- Register page
+![Register page](Screenshot%202026-05-06%20115635.png)
+
+> Note: image files are stored at the repository root. If images do not display on GitHub, ensure they are committed and have the exact filenames above.
+
+## Final Notes
+
+- JWT tokens are stored in `localStorage` by the frontend auth service.
+- If you want a different single README layout (e.g., include architecture diagrams or links to specific files), tell me and I will update it.

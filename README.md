@@ -162,29 +162,20 @@ Enrollments
 ## Screenshots
 
 - Home page
-![Home page](Screenshot%202026-05-06%20115534.png)
-
+![alt text](<Screenshot 2026-05-06 115534.png>)
 - Courses page
-![Courses page](Screenshot%202026-05-06%20115551.png)
+![alt text](<Screenshot 2026-05-06 115551.png>)
 
 - Students page
-![Students page](Screenshot%202026-05-06%20115600.png)
-
+![alt text](<Screenshot 2026-05-06 115600.png>)
 - Instructors page
-![Instructors page](Screenshot%202026-05-06%20115607.png)
+![alt text](<Screenshot 2026-05-06 115607.png>)
 
 - Enrollments page
-![Enrollments page](Screenshot%202026-05-06%20115615.png)
+![alt text](<Screenshot 2026-05-06 115615.png>)
 
 - Login page
-![Login page](Screenshot%202026-05-06%20115628.png)
+![alt text](<Screenshot 2026-05-06 115628.png>)
 
 - Register page
-![Register page](Screenshot%202026-05-06%20115635.png)
-
-> Note: image files are stored at the repository root. If images do not display on GitHub, ensure they are committed and have the exact filenames above.
-
-## Final Notes
-
-- JWT tokens are stored in `localStorage` by the frontend auth service.
-- If you want a different single README layout (e.g., include architecture diagrams or links to specific files), tell me and I will update it.
+![alt text](<Screenshot 2026-05-06 115635.png>)

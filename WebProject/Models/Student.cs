@@ -1,0 +1,14 @@
+namespace WebProject.Models;
+
+public class Student
+{
+    public int Id { get; set; }
+    public string StudentId { get; set; } = string.Empty;
+    public string FirstName { get; set; } = string.Empty;
+    public string LastName { get; set; } = string.Empty;
+    public string Email { get; set; } = string.Empty;
+    public DateTime EnrollmentDate { get; set; }
+
+    // Many-to-Many relationship: Student enrolls in many Courses
+    public ICollection<Enrollment> Enrollments { get; set; } = new List<Enrollment>();
+}
